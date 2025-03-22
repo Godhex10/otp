@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email OTP Verification</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        .main {
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+        }
+        .otp-form {
+            width: 500px;
+            background-color: #eeeeee;
+            padding: 30px;
+            display: grid;
+            gap: 20px;
+            padding-bottom: 30px;
+        }
+        .otp-form input {
+            width: 100%;
+            padding: 10px;
+        }
+        .otpverify {
+            width: 100%;
+            display: flex;
+            gap: 20px;
+            display: none;
+        }
+        .btner {
+            padding: 10px;
+            background-color: #343a40;
+            outline: none;
+            border: none;
+            cursor: pointer;
+            border-radius: 0.3rem;
+            width: 150px;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="otp-form">
+            <h1>Verify your Email</h1>
+            <input type="email" id="email" placeholder="Enter Email... "/>
+            <div class="otpverify">
+                <input type="text" id="otp_inp" placeholder="Enter OTP sent to your email"/>
+                <button class="btner" id="otp-btn">Verify</button>
+            </div>
+            <button class="btner" onclick="sendOTP()">Send OTP</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script>
+        (function() {
+            emailjs.init("xZcKR-P73VPzPDb7k"); // Replace with your actual User ID
+        })();
+
+        let otp_val;
+        function sendOTP() {
+            const email = document.getElementById('email').value;
+            const otpverify = document.getElementsByClassName('otpverify')[0];
+            otp_val = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+
+            let templateParams = {
+                to_email: email,
+                otp: otp_val
+            };
+
+            emailjs.send("service_lzo03hh", "template_wqu9f02", templateParams)
+                .then(response => {
+                    console.log("OTP Sent Successfully!", response);
+                    alert("OTP Sent to " + email);
+                    otpverify.style.display = "flex";
+                }, error => {
+                    console.log("Error sending OTP:", error);
+                    alert("Failed to send OTP. Try again.");
+                });
+        }
+
+        document.getElementById('otp-btn').addEventListener('click', function() {
+            const otp_inp = document.getElementById('otp_inp').value;
+            if (otp_inp == otp_val) {
+                alert("Email Address Verified...");
+            } else {
+                alert("Invalid OTP");
+            }
+        });
+    </script>
+</body>
+</html>
