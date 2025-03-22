@@ -61,7 +61,7 @@
         </div>
     </div>
 
-    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
     <script>
         (function() {
             emailjs.init("xZcKR-P73VPzPDb7k"); // Replace with your actual User ID
@@ -71,10 +71,16 @@
         function sendOTP() {
             const email = document.getElementById('email').value;
             const otpverify = document.getElementsByClassName('otpverify')[0];
-            otp_val = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+
+            if (!email) {
+                alert("Please enter an email address.");
+                return;
+            }
+
+            otp_val = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit OTP
 
             let templateParams = {
-                to_email: email,
+                to_email: email,  // Ensure this matches the variable in your EmailJS template
                 otp: otp_val
             };
 
